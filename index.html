@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Silent Explorers — Abandoned but Never Forgotten | NASA Space Apps 2026</title>
+  <meta name="description" content="An interactive educational tribute to NASA's dormant rovers, landers, and probes. Explore 15 silent machines across Mars, the Moon, and deep space—and hear their stories." />
+  <meta name="keywords" content="NASA, Space Apps Challenge, Opportunity rover, Spirit rover, Mars, Moon, Apollo, Viking, Pioneer, Kepler, space exploration" />
+  <meta property="og:title" content="Silent Explorers — Abandoned but Never Forgotten" />
+  <meta property="og:description" content="Interactive storytelling about NASA's discarded equipment on the Moon and Mars. NASA Space Apps Challenge 2026." />
+  <meta name="theme-color" content="#0a0b10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       NAVIGATION
+       ═══════════════════════════════════════════════════════ -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-brand">
+      <span class="nav-icon" aria-hidden="true">🛸</span>
+      <span class="nav-title">Silent Explorers</span>
+    </div>
+    <div class="nav-links">
+      <a href="#explorer"    aria-label="Jump to artifact explorer">Artifacts</a>
+      <a href="#timeline"    aria-label="Jump to mission timeline">Timeline</a>
+      <a href="#interactive" aria-label="Jump to interactive features">Interact</a>
+    </div>
+    <div class="nav-badge" aria-label="NASA Space Apps Challenge 2026">NASA Space Apps 2026</div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════
+       HERO — "Voices in the Dust"
+       ═══════════════════════════════════════════════════════ -->
+  <section id="hero" aria-labelledby="hero-heading">
+    <canvas id="starfield" aria-hidden="true"></canvas>
+    <div class="hero-nebula" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">NASA Space Apps Challenge 2026</div>
+
+      <h1 class="hero-title" id="hero-heading">
+        <span class="title-line-1">Abandoned,</span>
+        <span class="title-line-2">But Never Forgotten</span>
+      </h1>
+
+      <p class="hero-sub">The Silent Explorers of Our Solar System</p>
+
+      <p class="hero-desc">
+        Across the rust-red plains of Mars, the grey desolation of the Moon, and the
+        infinite dark between the stars—brave machines lie in silence. They gave
+        everything they had. This is their story, told in their own words.
+      </p>
+
+      <div class="hero-chips" role="list" aria-label="Quick navigation">
+        <button class="hero-chip" data-filter="Moon" aria-label="Filter by Moon artifacts">
+          🌕 Moon Artifacts
+        </button>
+        <button class="hero-chip" data-filter="Mars" aria-label="Filter by Mars missions">
+          🔴 Mars Missions
+        </button>
+        <button class="hero-chip" data-filter="Deep Space" aria-label="Filter by deep space missions">
+          ✨ Deep Space
+        </button>
+        <button class="hero-chip" data-target="timeline" aria-label="View mission timeline">
+          ⏳ View Timeline
+        </button>
+      </div>
+
+      <div class="hero-stats" aria-label="Mission statistics">
+        <div class="stat">
+          <div class="stat-num">15</div>
+          <div class="stat-label">Silent Explorers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">55+</div>
+          <div class="stat-label">Years of History</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">2,662</div>
+          <div class="stat-label">Worlds Found</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator" aria-hidden="true">
+      <div class="scroll-text">Scroll to Explore</div>
+      <div class="scroll-arrow">↓</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       EXPLORER — The Virtual Graveyard
+       ═══════════════════════════════════════════════════════ -->
+  <section id="explorer" class="section-animate" aria-labelledby="explorer-heading">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">The Virtual Graveyard</div>
+        <h2 class="section-title" id="explorer-heading">Artifact Explorer</h2>
+        <p class="section-desc">
+          15 machines that gave everything. Click any artifact to open their
+          Explorer's Log and hear their story.
+        </p>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar" role="toolbar" aria-label="Filter and search artifacts">
+        <div class="filter-buttons" role="group" aria-label="Filter by celestial body">
+          <button class="filter-btn active" data-filter="All"        id="filter-all"        aria-pressed="true">All Missions</button>
+          <button class="filter-btn"         data-filter="Mars"       id="filter-mars"       aria-pressed="false">🔴 Mars</button>
+          <button class="filter-btn"         data-filter="Moon"       id="filter-moon"       aria-pressed="false">🌕 Moon</button>
+          <button class="filter-btn"         data-filter="Deep Space" id="filter-deep-space" aria-pressed="false">✨ Deep Space</button>
+        </div>
+        <div class="search-wrap" role="search">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input
+            type="search"
+            id="search-input"
+            class="search-input"
+            placeholder="Search artifacts, locations, types…"
+            aria-label="Search artifacts"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+
+      <!-- Artifact Grid -->
+      <div id="artifact-grid" class="artifact-grid" role="list" aria-label="Artifact cards"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       TIMELINE — A History of Exploration
+       ═══════════════════════════════════════════════════════ -->
+  <section id="timeline" class="section-animate" aria-labelledby="timeline-heading">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">A History of Exploration</div>
+        <h2 class="section-title" id="timeline-heading">Mission Timeline</h2>
+        <p class="section-desc">
+          From Viking to InSight—five decades of leaving our mark across the solar system.
+          Click any mission to open its Explorer's Log.
+        </p>
+      </div>
+      <div class="timeline-scroll-container" role="region" aria-label="Scrollable mission timeline">
+        <div id="timeline-track" class="timeline-track" role="list" aria-label="Timeline of missions"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       INTERACTIVE — Mission Control Center
+       ═══════════════════════════════════════════════════════ -->
+  <section id="interactive" class="section-animate" aria-labelledby="interactive-heading">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Learn &amp; Connect</div>
+        <h2 class="section-title" id="interactive-heading">Mission Control Center</h2>
+        <p class="section-desc">
+          Test your knowledge, revive a dormant rover, and leave your message
+          echoing across the cosmos.
+        </p>
+      </div>
+
+      <div class="interactive-grid">
+
+        <!-- QUIZ — Revive the Rover -->
+        <div class="interactive-panel quiz-panel" aria-labelledby="quiz-heading">
+          <div class="panel-header">
+            <span class="panel-icon" aria-hidden="true">⚡</span>
+            <div>
+              <h3 class="panel-title" id="quiz-heading">Revive the Rover</h3>
+              <p class="panel-subtitle">Answer 3 questions to restore power</p>
+            </div>
+          </div>
+
+          <div class="rover-selector">
+            <label for="quiz-rover-select">Select Mission:</label>
+            <select id="quiz-rover-select" aria-label="Choose a rover or lander to revive">
+              <!-- Populated by JavaScript -->
+            </select>
+          </div>
+
+          <div class="power-meter" role="meter" aria-label="Rover power level">
+            <div class="power-label">
+              <span>Power Level: <strong id="quiz-rover-name">—</strong></span>
+              <span id="power-pct" aria-live="polite">0%</span>
+            </div>
+            <div class="power-bar-container">
+              <div id="power-fill" class="power-fill"></div>
+            </div>
+          </div>
+
+          <div id="quiz-question-area" class="quiz-question-area" aria-live="polite">
+            <div class="quiz-placeholder">
+              Select a mission above, then answer 3 questions to restore its power!
+            </div>
+          </div>
+        </div>
+
+        <!-- GUESTBOOK — Leave a Transmission -->
+        <div class="interactive-panel guestbook-panel" aria-labelledby="guestbook-heading">
+          <div class="panel-header">
+            <span class="panel-icon" aria-hidden="true">📡</span>
+            <div>
+              <h3 class="panel-title" id="guestbook-heading">Leave a Transmission</h3>
+              <p class="panel-subtitle">Send a message across the cosmos</p>
+            </div>
+          </div>
+
+          <div class="transmission-form" role="form" aria-label="Message submission form">
+            <div class="form-row">
+              <input
+                type="text"
+                id="transmission-name"
+                class="form-input"
+                placeholder="Your name (optional)"
+                maxlength="60"
+                aria-label="Your name"
+                autocomplete="name"
+              />
+              <select
+                id="transmission-rover"
+                class="form-select"
+                aria-label="Choose which mission to message"
+              >
+                <!-- Populated by JavaScript -->
+              </select>
+            </div>
+            <div class="form-textarea-wrap">
+              <textarea
+                id="transmission-message"
+                class="form-textarea"
+                placeholder="What would you say to this explorer? They gave everything to advance human knowledge. (max 280 characters)"
+                maxlength="280"
+                aria-label="Your message to the mission"
+                aria-describedby="char-count"
+              ></textarea>
+              <div id="char-count" class="char-count" aria-live="polite">0/280</div>
+            </div>
+            <button id="send-btn" class="send-btn" aria-label="Submit your transmission">
+              Send Transmission ↗
+            </button>
+          </div>
+
+          <div class="transmission-wall-header">Community Transmissions</div>
+          <div
+            id="transmission-wall"
+            class="transmission-wall"
+            role="log"
+            aria-label="Community messages to space explorers"
+            aria-live="polite"
+          ></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="footer-icon" aria-hidden="true">🛸</span>
+          <span class="footer-title">Silent Explorers</span>
+        </div>
+        <p class="footer-tagline">Built for NASA Space Apps Challenge 2026</p>
+        <p class="footer-credit">
+          In eternal honor of Opportunity, Spirit, Viking, Phoenix, InSight, and
+          every brave machine that explored the unknown so humanity could dream further.
+          Their silence is not an ending—it is a foundation.
+        </p>
+        <div class="footer-badges" aria-label="Mission categories">
+          <span class="footer-badge">🔴 Mars</span>
+          <span class="footer-badge">🌕 Moon</span>
+          <span class="footer-badge">✨ Deep Space</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════
+       MODAL — The Explorer's Log
+       ═══════════════════════════════════════════════════════ -->
+  <div
+    id="artifact-modal"
+    class="modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-name"
+    aria-describedby="modal-fullname"
+  >
+    <!-- Backdrop (click to close) -->
+    <div class="modal-backdrop" id="modal-overlay" aria-hidden="true"></div>
+
+    <!-- Modal Panel -->
+    <div class="modal-panel">
+
+      <!-- Close Button -->
+      <button
+        class="modal-close"
+        id="modal-close"
+        aria-label="Close Explorer's Log"
+        type="button"
+      >✕</button>
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 id="modal-name"     class="modal-name"></h2>
+        <div id="modal-fullname" class="modal-fullname"></div>
+        <div class="modal-badges">
+          <span id="modal-type"     class="modal-type-badge"></span>
+          <span id="modal-location" class="modal-location-badge"></span>
+        </div>
+        <div id="modal-status" class="modal-status"></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="modal-tabs" role="tablist" aria-label="Explorer's Log sections">
+        <button class="tab-btn active" data-tab="log"       role="tab" aria-selected="true"  aria-controls="tab-log"       id="tab-btn-log">
+          📜 Explorer's Log
+        </button>
+        <button class="tab-btn"        data-tab="legacy"    role="tab" aria-selected="false" aria-controls="tab-legacy"    id="tab-btn-legacy">
+          🏆 Legacy
+        </button>
+        <button class="tab-btn"        data-tab="blueprint" role="tab" aria-selected="false" aria-controls="tab-blueprint" id="tab-btn-blueprint">
+          🔧 Blueprint
+        </button>
+        <button class="tab-btn"        data-tab="terminal"  role="tab" aria-selected="false" aria-controls="tab-terminal"  id="tab-btn-terminal">
+          💻 Terminal
+        </button>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="modal-content">
+        <div id="tab-log"       class="tab-pane active" role="tabpanel" aria-labelledby="tab-btn-log"></div>
+        <div id="tab-legacy"    class="tab-pane"        role="tabpanel" aria-labelledby="tab-btn-legacy"></div>
+        <div id="tab-blueprint" class="tab-pane"        role="tabpanel" aria-labelledby="tab-btn-blueprint"></div>
+        <div id="tab-terminal"  class="tab-pane"        role="tabpanel" aria-labelledby="tab-btn-terminal"></div>
+      </div>
+
+    </div><!-- /.modal-panel -->
+  </div><!-- /#artifact-modal -->
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
